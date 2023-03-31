@@ -68,6 +68,13 @@ class TaskList(LoginRequiredMixin, ListView):
         context['selected_category'] = self.request.GET.get('category')
         context['search_input'] = search_input
         context['selected_complete'] = self.request.GET.get('complete')
+        context['order_by_deadline'] = self.request.GET.get('deadline')
+
+        sort_order = self.request.GET.get('sort_order')
+        if sort_order == 'deadline_asc':
+            context['tasks'] = context['tasks'].order_by('deadline')
+        elif sort_order == 'deadline_desc':
+            context['tasks'] = context['tasks'].order_by('-deadline')
 
         return context
     
