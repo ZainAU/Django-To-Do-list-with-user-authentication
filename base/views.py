@@ -14,7 +14,7 @@ from django.views import View
 from django.shortcuts import redirect
 from django.db import transaction
 
-from .models import Task
+from .models import Task, Category
 from .forms import PositionForm
 
 
@@ -62,6 +62,15 @@ class TaskList(LoginRequiredMixin, ListView):
         context['search_input'] = search_input
 
         return context
+    
+    def category_filter(request):
+        categories = Category.objects.all()
+        selected_category = request.GET.get('category')
+        if selected_category:
+            tasks = Task.objects.filter(user=request.user, category__name=selected_category)
+        else:
+            tasks = Task.objects.filter(user=request.user)
+        return render(request, 'task_list.html', {'tasks': tasks, 'categories': categories, 'selected_category': selected_category})
 
 
 class TaskDetail(LoginRequiredMixin, DetailView):
@@ -78,12 +87,24 @@ class TaskCreate(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super(TaskCreate, self).form_valid(form)
+    
+    def create_task(request):
+        if request.method == 'POST':
+            form = TaskCreate(request.POST)
+            if form.is_valid():
+                task = form.save(commit=False)
+                task.user = request.user
+                task.save()
+                return redirect('tasks')
+        else:
+            form = TaskCreate(initial={'category': Category()})
+        return render(request, 'create_task.html', {'form': form})
+
 
 
 class TaskUpdate(LoginRequiredMixin, UpdateView):
     model = Task
-    fields = ['title', 'category', 'description',
-              'deadline', 'complete', 'status']
+    fields = ['title', 'category', 'description', 'deadline', 'complete']
     success_url = reverse_lazy('tasks')
 
 
@@ -91,11 +112,9 @@ class DeleteView(LoginRequiredMixin, DeleteView):
     model = Task
     context_object_name = 'task'
     success_url = reverse_lazy('tasks')
-
     def get_queryset(self):
         owner = self.request.user
         return self.model.objects.filter(user=owner)
-
 
 class TaskReorder(View):
     def post(self, request):
