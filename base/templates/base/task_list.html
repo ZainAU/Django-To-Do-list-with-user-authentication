@@ -13,13 +13,22 @@
 </div>
 
 <div class="filter-category">
-    <form method="GET" action="{% url 'tasks' %}">
-        <select name="category" onchange="this.form.submit()">
-          <option value="">All categories</option>
-          {% for category in category %}
-            <option value="{{ category.name }}" {% if category.name == selected_category %}selected{% endif %}>{{ category.name }}</option>
+    <form method="get">
+        <label for="category">Category:</label>
+        <select name="category" id="category">
+          <option value="">All</option>
+          {% for category in categories %}
+            <option value="{{ category.name }}" {% if selected_category == category.name %}selected{% endif %}>{{ category.name }}</option>
           {% endfor %}
         </select>
+
+        <!-- <label for="complete">Complete/Incomplete:</label>
+        <select name="is_complete" id="completed_filter">
+            <option value="">All tasks</option>
+            <option value="True" {% if selected_complete == 'True' %} selected{% endif %}>Completed tasks</option>
+            <option value="False" {% if selected_complete == 'False' %} selected{% endif %}>Incomplete tasks</option>
+          </select> -->
+        <button type="submit" class="button">Filter by Category</button>
       </form>
 </div>
 
