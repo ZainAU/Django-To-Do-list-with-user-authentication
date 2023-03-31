@@ -6,8 +6,10 @@ from django.urls import reverse_lazy
 
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
+from django.contrib import messages
 
 # Imports for Reordering Feature
 from django.views import View
@@ -46,11 +48,10 @@ class RegisterPage(FormView):
             return redirect('tasks')
         return super(RegisterPage, self).get(*args, **kwargs)
 
-
 # main page with todo list, search and filters
 class TaskList(LoginRequiredMixin, ListView):
     model = Task
-    context_object_name = 'tasks'  # for ease of use
+    context_object_name = 'tasks'
     context_object_name2 = 'categories'
     # categories = Category.objects.all()
 
@@ -69,7 +70,7 @@ class TaskList(LoginRequiredMixin, ListView):
         context['selected_complete'] = self.request.GET.get('complete')
 
         return context
-
+    
     # queries for filters
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -82,7 +83,7 @@ class TaskList(LoginRequiredMixin, ListView):
             queryset = queryset.filter(complete=selected_complete)
 
         return queryset
-
+    
 
 # one specific task with all details
 class TaskDetail(LoginRequiredMixin, DetailView):
@@ -100,7 +101,7 @@ class TaskCreate(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super(TaskCreate, self).form_valid(form)
-
+    
     def create_task(request):
         if request.method == 'POST':
             form = TaskCreate(request.POST)
@@ -114,7 +115,7 @@ class TaskCreate(LoginRequiredMixin, CreateView):
         return render(request, 'create_task.html', {'form': form})
 
 
-# updating an existing task
+# updating an existing task  
 class TaskUpdate(LoginRequiredMixin, UpdateView):
     model = Task
     fields = ['title', 'category', 'description', 'deadline', 'complete']
@@ -126,21 +127,6 @@ class DeleteView(LoginRequiredMixin, DeleteView):
     model = Task
     context_object_name = 'task'
     success_url = reverse_lazy('tasks')
-
     def get_queryset(self):
         owner = self.request.user
         return self.model.objects.filter(user=owner)
-
-
-#
-class TaskReorder(View):
-    def post(self, request):
-        form = PositionForm(request.POST)
-
-        if form.is_valid():
-            positionList = form.cleaned_data["position"].split(',')
-
-            with transaction.atomic():
-                self.request.user.set_task_order(positionList)
-
-        return redirect(reverse_lazy('tasks'))
