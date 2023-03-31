@@ -3,14 +3,17 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 # Create your models here.
 
+
 def one_week_hence():
     return timezone.now() + timezone.timedelta(days=7)
 
+
 class Category(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(default="Unassinged", max_length=100)
 
     def __str__(self):
         return self.name
+
 
 class Task(models.Model):
     user = models.ForeignKey(
@@ -22,7 +25,7 @@ class Task(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     deadline = models.DateTimeField(default=one_week_hence)
     status = models.BooleanField(default=False)
-    
+
     def __str__(self):
         return self.title
 
