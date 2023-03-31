@@ -48,6 +48,8 @@ class RegisterPage(FormView):
 class TaskList(LoginRequiredMixin, ListView):
     model = Task
     context_object_name = 'tasks'
+    context_object_name2 = 'categories'
+    # categories = Category.objects.all()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -58,20 +60,25 @@ class TaskList(LoginRequiredMixin, ListView):
         if search_input:
             context['tasks'] = context['tasks'].filter(
                 title__contains=search_input)
-
+        context['categories'] = Category.objects.all()
+        context['selected_category'] = self.request.GET.get('category')
         context['search_input'] = search_input
+        # context['selected_complete'] = self.request.GET.get('complete')
 
         return context
     
-    def category_filter(request):
-        categories = Category.objects.all()
-        selected_category = request.GET.get('category')
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        selected_category = self.request.GET.get('category')
         if selected_category:
-            tasks = Task.objects.filter(user=request.user, category__name=selected_category)
-        else:
-            tasks = Task.objects.filter(user=request.user)
-        return render(request, 'task_list.html', {'tasks': tasks, 'categories': categories, 'selected_category': selected_category})
+            queryset = queryset.filter(category__name=selected_category)
 
+        # selected_complete = self.request.GET.get('complete')
+        # if selected_complete:
+        #     queryset = queryset.filter(complete=selected_complete)
+
+        return queryset
+    
 
 class TaskDetail(LoginRequiredMixin, DetailView):
     model = Task
