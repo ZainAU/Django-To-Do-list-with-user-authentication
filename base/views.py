@@ -18,6 +18,7 @@ from .models import Task, Category
 from .forms import PositionForm
 
 
+# login
 class CustomLoginView(LoginView):
     template_name = 'base/login.html'
     fields = '__all__'
@@ -27,6 +28,7 @@ class CustomLoginView(LoginView):
         return reverse_lazy('tasks')
 
 
+# sign up
 class RegisterPage(FormView):
     template_name = 'base/register.html'
     form_class = UserCreationForm
@@ -45,6 +47,7 @@ class RegisterPage(FormView):
         return super(RegisterPage, self).get(*args, **kwargs)
 
 
+# main page with todo list, search and filters
 class TaskList(LoginRequiredMixin, ListView):
     model = Task
     context_object_name = 'tasks'
@@ -63,29 +66,32 @@ class TaskList(LoginRequiredMixin, ListView):
         context['categories'] = Category.objects.all()
         context['selected_category'] = self.request.GET.get('category')
         context['search_input'] = search_input
-        # context['selected_complete'] = self.request.GET.get('complete')
+        context['selected_complete'] = self.request.GET.get('complete')
 
         return context
     
+    # queries for filters
     def get_queryset(self):
         queryset = super().get_queryset()
         selected_category = self.request.GET.get('category')
         if selected_category:
             queryset = queryset.filter(category__name=selected_category)
 
-        # selected_complete = self.request.GET.get('complete')
-        # if selected_complete:
-        #     queryset = queryset.filter(complete=selected_complete)
+        selected_complete = self.request.GET.get('complete')
+        if selected_complete:
+            queryset = queryset.filter(complete=selected_complete)
 
         return queryset
     
 
+# one specific task with all details
 class TaskDetail(LoginRequiredMixin, DetailView):
     model = Task
     context_object_name = 'task'
     template_name = 'base/task.html'
 
 
+# creating new task
 class TaskCreate(LoginRequiredMixin, CreateView):
     model = Task
     fields = ['title', 'category', 'description', 'deadline', 'complete']
@@ -108,13 +114,14 @@ class TaskCreate(LoginRequiredMixin, CreateView):
         return render(request, 'create_task.html', {'form': form})
 
 
-
+# updating an existing task  
 class TaskUpdate(LoginRequiredMixin, UpdateView):
     model = Task
     fields = ['title', 'category', 'description', 'deadline', 'complete']
     success_url = reverse_lazy('tasks')
 
 
+# deleting a task
 class DeleteView(LoginRequiredMixin, DeleteView):
     model = Task
     context_object_name = 'task'
@@ -123,6 +130,8 @@ class DeleteView(LoginRequiredMixin, DeleteView):
         owner = self.request.user
         return self.model.objects.filter(user=owner)
 
+
+# 
 class TaskReorder(View):
     def post(self, request):
         form = PositionForm(request.POST)
