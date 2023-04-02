@@ -14,7 +14,7 @@
     <a href="{% url 'login' %}">Login</a> {% endif %}
 </div>
 
-<!-- filters by categories and completeness-->
+<!-- filters by categories and completeness, sort by deadline -->
 <div class="filter-category">
     <form method="get">
         <label for="category">Category:</label>
@@ -34,6 +34,16 @@
           </select>
         <button type="submit" class="button">Filter by Completeness</button>
       </form>
+
+      <form method="GET">
+        <label for="sort">Sort by Deadline</label>
+        <select name="sort_order" id="sort_deadline" onchange="this.form.submit()">
+            <option value="">Sort by</option>
+            <option value="deadline_asc" {% if order_by_deadline == 'deadline_asc' %}selected{% endif %}>Deadline (ascending)</option>
+            <option value="deadline_desc" {% if order_by_deadline == 'deadline_desc' %}selected{% endif %}>Deadline (descending)</option>
+        </select>
+    </form>
+    
 </div>
 
 <!-- Search tasks -->
