@@ -37,9 +37,12 @@ class RegisterPage(FormView):
     redirect_authenticated_user = True
     success_url = reverse_lazy('tasks')
 
+    # def get_success_url(self) -> str:
+    #     return reverse_lazy('tasks')
+
     def form_valid(self, form):
         user = form.save()
-        if user is not None:
+        if user is not None:  # user successfully created
             login(self.request, user)
         return super(RegisterPage, self).form_valid(form)
 
@@ -47,6 +50,15 @@ class RegisterPage(FormView):
         if self.request.user.is_authenticated:
             return redirect('tasks')
         return super(RegisterPage, self).get(*args, **kwargs)
+
+
+# def register_request(request):
+#     if request.method == "POST":
+#         form = NewUserForm(request.POST)
+#         if form.is_valid():
+#             user = form.save()
+#             login(request, user)
+
 
 # main page with todo list, search and filters
 class TaskList(LoginRequiredMixin, ListView):
@@ -77,7 +89,7 @@ class TaskList(LoginRequiredMixin, ListView):
             context['tasks'] = context['tasks'].order_by('-deadline')
 
         return context
-    
+
     # queries for filters
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -90,7 +102,7 @@ class TaskList(LoginRequiredMixin, ListView):
             queryset = queryset.filter(complete=selected_complete)
 
         return queryset
-    
+
 
 # one specific task with all details
 class TaskDetail(LoginRequiredMixin, DetailView):
@@ -105,10 +117,10 @@ class TaskCreate(LoginRequiredMixin, CreateView):
     fields = ['title', 'category', 'description', 'deadline', 'complete']
     success_url = reverse_lazy('tasks')
 
-    def form_valid(self, form):
+    def form_valid(self, form):  # modifying default function
         form.instance.user = self.request.user
         return super(TaskCreate, self).form_valid(form)
-    
+
     def create_task(request):
         if request.method == 'POST':
             form = TaskCreate(request.POST)
@@ -122,7 +134,7 @@ class TaskCreate(LoginRequiredMixin, CreateView):
         return render(request, 'create_task.html', {'form': form})
 
 
-# updating an existing task  
+# updating an existing task
 class TaskUpdate(LoginRequiredMixin, UpdateView):
     model = Task
     fields = ['title', 'category', 'description', 'deadline', 'complete']
@@ -134,6 +146,7 @@ class DeleteView(LoginRequiredMixin, DeleteView):
     model = Task
     context_object_name = 'task'
     success_url = reverse_lazy('tasks')
+
     def get_queryset(self):
         owner = self.request.user
         return self.model.objects.filter(user=owner)
