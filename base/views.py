@@ -36,9 +36,6 @@ class RegisterPage(FormView):
     redirect_authenticated_user = True
     success_url = reverse_lazy('tasks')
 
-    # def get_success_url(self) -> str:
-    #     return reverse_lazy('tasks')
-
     def form_valid(self, form):
         user = form.save()
         if user is not None:  # user successfully created
@@ -49,22 +46,13 @@ class RegisterPage(FormView):
         if self.request.user.is_authenticated:
             return redirect('tasks')
         return super(RegisterPage, self).get(*args, **kwargs)
-
-
-# def register_request(request):
-#     if request.method == "POST":
-#         form = NewUserForm(request.POST)
-#         if form.is_valid():
-#             user = form.save()
-#             login(request, user)
-
+    
 
 # main page with todo list, search and filters
 class TaskList(LoginRequiredMixin, ListView):
     model = Task
     context_object_name = 'tasks'
     context_object_name2 = 'categories'
-    # categories = Category.objects.all()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -81,27 +69,30 @@ class TaskList(LoginRequiredMixin, ListView):
         context['selected_complete'] = self.request.GET.get('complete')
         context['order_by_deadline'] = self.request.GET.get('deadline')
 
-        sort_order = self.request.GET.get('sort_order')
-        if sort_order == 'deadline_asc':
-            context['tasks'] = context['tasks'].order_by('deadline')
-        elif sort_order == 'deadline_desc':
-            context['tasks'] = context['tasks'].order_by('-deadline')
-
         return context
-
+    
     # queries for filters
     def get_queryset(self):
         queryset = super().get_queryset()
+
+        # query for category filter
         selected_category = self.request.GET.get('category')
         if selected_category:
             queryset = queryset.filter(category__name=selected_category)
 
+        # query for completeness filter
         selected_complete = self.request.GET.get('complete')
         if selected_complete:
             queryset = queryset.filter(complete=selected_complete)
+        
+        # query for sort by deadline 
+        sort_order = self.request.GET.get('sort_order')
+        if sort_order == 'deadline_asc':
+            queryset = queryset.order_by('deadline')
+        elif sort_order == 'deadline_desc':
+            queryset = queryset.order_by('-deadline')
 
         return queryset
-
 
 # one specific task with all details
 class TaskDetail(LoginRequiredMixin, DetailView):
