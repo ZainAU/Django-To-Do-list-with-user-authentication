@@ -7,7 +7,6 @@ from django.urls import reverse_lazy
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from django.contrib import messages
 
@@ -17,7 +16,7 @@ from django.shortcuts import redirect
 from django.db import transaction
 
 from .models import Task, Category
-from .forms import PositionForm
+from .forms import PositionForm, UserCreateForm
 
 
 # login
@@ -33,7 +32,7 @@ class CustomLoginView(LoginView):
 # sign up
 class RegisterPage(FormView):
     template_name = 'base/register.html'
-    form_class = UserCreationForm
+    form_class = UserCreateForm
     redirect_authenticated_user = True
     success_url = reverse_lazy('tasks')
 
@@ -46,7 +45,7 @@ class RegisterPage(FormView):
             login(self.request, user)
         return super(RegisterPage, self).form_valid(form)
 
-    def get(self, *args, **kwargs):
+    def get(self, *args, **kwargs):  # since only setting redirect_authenticated_user wasn't working
         if self.request.user.is_authenticated:
             return redirect('tasks')
         return super(RegisterPage, self).get(*args, **kwargs)
