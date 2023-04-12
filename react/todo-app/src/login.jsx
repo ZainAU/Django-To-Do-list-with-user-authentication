@@ -22,12 +22,14 @@ function Login(props) {
       // login successful
       console.log('User 1 logged in');
       props.onLogin();
-      navigate('/dashboard');
+      navigate('/dashboard', { state: { user: username } });
+
     } else if (username === 'user2' && password === 'password2') {
       // login successful
       console.log('User 2 logged in');
       props.onLogin();
-      navigate('/dashboard');
+      navigate('/dashboard', { state: { user: username } });
+
     } else {
       // login failed
       setErrorMessage('Invalid username or password');
