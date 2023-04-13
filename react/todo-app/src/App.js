@@ -4,6 +4,7 @@ import Register from './register';
 import Login from './login';
 import Dashboard from './dashboard';
 import TaskForm from './task-form';
+import Contact from './contact';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -20,6 +21,7 @@ function App() {
         <Route path="/dashboard" element={loggedIn ? <Dashboard /> : <Login onLogin={handleLogin} />} />
         <Route path="/" element={<Register />} />
         <Route path='/taskform' element={<TaskForm/>}/>
+        <Route path='contactform' element={<Contact/>}/>
       </Routes>
     </Router>
   );

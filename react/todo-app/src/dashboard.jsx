@@ -34,6 +34,7 @@ function Dashboard() {
           </div>
         ))}
       </div>
+      <Link to='/contactform'>Contact</Link>
     </div>
   );
 }
