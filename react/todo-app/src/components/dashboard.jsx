@@ -21,7 +21,7 @@ function Dashboard() {
     <div>
       <h1  className="header-bar">Hello, {user}!</h1>
       {/* <Link to='/taskform'>Create Task</Link> */}
-      <TaskForm onTaskCreate={handleTaskCreate, -} />
+      <TaskForm onTaskCreate={handleTaskCreate} />
       <div>
         {tasks.map((task, index) => (
           <div key={index}>
@@ -33,6 +33,12 @@ function Dashboard() {
             <button onClick={() => handleTaskDelete(index)}>Delete</button>
           </div>
         ))}
+      </div>
+      <div>
+      <Link to='/contactform'>Contact</Link>
+      </div>
+      <div>
+      <Link to='/login'>Logout</Link>
       </div>
     </div>
   );
