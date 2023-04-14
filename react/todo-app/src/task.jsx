@@ -5,22 +5,31 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import {IconButton, Button} from '@mui/material/';
 
-export default function Task({task, handleStatus, handleDelete, handleEdit} ) {
+export default function Task({index, task, handleTaskDone, onEditTask, onTaskDelete} ) {
     return (
-    <Card>
-        <CardContent>
-            1. Sample Title
-            {/* task */}
-        </CardContent>
+        <div key={index}>
+        <h3>{task.title}</h3>
+        <p>{task.description ? (task.description) : "no description"}</p>
+        <p>Category: {task.category}</p>
+        <div>Due Date: {task.deadline ? (task.deadline.toString()) : "no deadline"}</div>
+        <p>Completed: {task.completed.toString()}</p>
         <CardActions>
+          { !task.completed && 
             <Button 
-            mode="elevated"
-            icon={"undo"}  >
+              mode="elevated"
+              icon={"undo"}
+              onClick={() => handleTaskDone(index)}>
                 { "Mark as done"}
-            </Button> 
-            <IconButton mode="contained" icon="pen" ><EditIcon/></IconButton>
-            <IconButton mode="contained" icon="delete"><DeleteIcon/></IconButton>
+            </Button>
+          }
+          <IconButton mode="contained" icon="pen" onClick={() => onEditTask(index)}>
+            <EditIcon/>
+          </IconButton>
+          <IconButton mode="contained" icon="delete" onClick={() => onTaskDelete(index)}>
+            <DeleteIcon/>
+          </IconButton>
         </CardActions>
-    </Card>
+        
+      </div>
     );
 }
