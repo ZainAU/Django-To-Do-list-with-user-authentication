@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useTransition} from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import Card from '@mui/material/Card';
@@ -14,6 +14,7 @@ function TaskList(props) {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [showCompleted, setShowCompleted] = useState('');
   const [sortByDeadline, setSortByDeadline] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
   const handleTaskDone = (index) => {
     const updatedTasks = [...tasks];
@@ -33,12 +34,21 @@ function TaskList(props) {
     setSortByDeadline(event.target.checked);
   };
 
+  // const filteredTasks = startTransition( () => {
+  //   props.tasks.filter((task) => {
+  //   return (
+  //       task.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
+  //       (selectedCategory === "" || task.category === selectedCategory) &&
+  //       (showCompleted === "" || task.completed.toString() === showCompleted))
+  //   });
+  // });
   const filteredTasks = props.tasks.filter((task) => {
     return (
         task.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
         (selectedCategory === "" || task.category === selectedCategory) &&
         (showCompleted === "" || task.completed.toString() === showCompleted))
     });
+
 
   const sortedTasks = tasks.sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
 
