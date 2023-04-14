@@ -19,7 +19,11 @@ function Dashboard() {
 
   return (
     <div>
-      <h1  className="header-bar">Hello, {user}!</h1>
+      <div  className="header-bar">
+      <h1>Hello, {user}!</h1>
+      </div>
+      <div className='card-body'>
+      <h2>You have incomplete tasks</h2>
       <Link to='/taskform'>Create Task</Link>
       {/* <TaskForm onTaskCreate={handleTaskCreate} /> */}
       <div>
@@ -34,7 +38,13 @@ function Dashboard() {
           </div>
         ))}
       </div>
+      <div>
       <Link to='/contactform'>Contact</Link>
+      </div>
+      <div>
+      <Link to='/login'>Logout</Link>
+      </div>
+      </div>
     </div>
   );
 }

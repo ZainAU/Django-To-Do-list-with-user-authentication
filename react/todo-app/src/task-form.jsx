@@ -49,9 +49,10 @@ function TaskForm(props) {
   return (
     <div>
         <div class="header-bar">
-            <Link to="/dashboard">Back</Link>
+        <h1>Create/Edit Task</h1>
         </div>
-        <h2>Create/Edit Task</h2>
+        
+        <div className='card-body'>
         <form onSubmit={handleSubmit}>
         <label>
           Title:
@@ -81,8 +82,10 @@ function TaskForm(props) {
           <input type="checkbox" checked={complete} onChange={handleCompleteChange} />
         </label>
         <br />
-        <button type="submit">Create</button>
+        <button className='button' type="submit">Create</button>
+        <button className='button'><Link to="/dashboard" className='link'>Back</Link></button>
       </form>
+      </div>
     </div>
   );
 }

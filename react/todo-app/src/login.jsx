@@ -54,7 +54,7 @@ function Login(props) {
             <input type="password" value={password} onChange={handlePasswordChange} />
           </label>
           <br />
-          <button type="submit">Login</button>
+          <button type="submit" className='button'>Login</button>
         </form>
         <p>Don't have an account? <Link to="/register">Register</Link></p>
       </div>

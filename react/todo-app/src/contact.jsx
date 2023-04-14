@@ -3,6 +3,10 @@ import { Link } from "react-router-dom";
 export default function Contact(){
     return(
         <div>
+        <div className="header-bar">
+            <h1>Contact Us</h1>
+            </div>
+            <div className='card-body'>
             <form>
                 <div>
                 <label>Name: </label>
@@ -18,6 +22,7 @@ export default function Contact(){
                 </div>
                 <Link to='/dashboard'>Back</Link>
             </form>
+            </div>
         </div>
     );
 }

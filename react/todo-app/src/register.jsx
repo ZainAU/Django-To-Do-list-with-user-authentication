@@ -76,7 +76,7 @@ function Register() {
             <input type="password" value={confirmPassword} onChange={handleConfirmPasswordChange} />
           </label>
           <br />
-          <button type="submit">Register</button>
+          <button className='button' type="submit">Register</button>
         </form>
         <p>Already have an account? <Link to="/login">Login</Link></p>
       </div>
