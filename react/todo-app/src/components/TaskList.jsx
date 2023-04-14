@@ -1,8 +1,12 @@
-import { useState } from 'react';
-// import Button from '@material-ui/core/Button';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import {IconButton, Button} from '@mui/material/';
 import Task from './Task';
 
-export default function TaskList({todos, handleStatus, handleDelete, handleEdit}) {
+export default function TaskList({tasks, handleStatus, handleDelete, handleEdit}) {
     return (<div>
         {/* {todos.map(todo => (
             <Card key={todo.id}>
@@ -20,9 +24,25 @@ export default function TaskList({todos, handleStatus, handleDelete, handleEdit}
             </CardActions>
             </Card>))} */}
             
-            <Task/>
-            <Task/>
-            <Task/>
+            {/* <Task/> */}
+            
+        {tasks.map(task=> (
+            // <Task task={tasks} handleStatus={handleStatus} handleDelete={handleDelete} handleEdit={handleEdit}} />
+        <Card>
+            <CardContent>
+                {task.id}. {task.title}
+            </CardContent>
+            <CardActions>
+                <Button 
+                mode="elevated"
+                icon={task.completed? "undo" : "check"} onClick={()=>handleStatus(task.id, !task.completed)}  >
+                    { task.completed ? "Undo" : "Mark as done"}
+                </Button> 
+                <IconButton mode="contained" onClick={handleEdit(task)}><EditIcon/></IconButton>
+                <IconButton mode="contained" onClick={() => {handleDelete(task.id)}}><DeleteIcon/></IconButton>
+            </CardActions>
+        </Card>
+        ))}
     </div>    
     );
 } 
