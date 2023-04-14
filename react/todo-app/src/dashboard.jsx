@@ -22,8 +22,6 @@ function Dashboard() {
     //   setTasks([...tasks, {...res, id: tasks.length+1}]);
     setTasks([...tasks, task])
     // localStorage.setItem("tasks"+tasks.length.toString(), JSON.stringify(task))
-    localStorage.setItem("tasks_", JSON.stringify(tasks))
-    console.log(localStorage)
     setSubmitLoader(false);
   };
 
@@ -37,18 +35,6 @@ function Dashboard() {
     const taskToEdit = tasks[index];
     setEditingTask(taskToEdit);
   };
-
-  // useEffect(() => {
-  //   let newtask = localStorage.getItem()
-  // })
-
-  // useEffect(()=> {
-  //   getTasks().then(res => {
-  //     setTasks([...res])
-  //     localStorage.setItem("tasks",tasks)
-  //     console.log(localStorage.getItem("tasks"))
-  //   })
-  // }, [])
 
   const [editingTask, setEditingTask] = useState(null);
 
@@ -66,7 +52,7 @@ function Dashboard() {
       {/* <Link to='/taskform'>Create Task</Link> */}
       <div className='flex-container'>
       <div className='taskform'><TaskForm onTaskCreate={handleTaskCreate} tasks={tasks} loading={submitLoader} /></div>
-      <div className='tasklist'><TaskList tasks={JSON.parse(localStorage.getItem("tasks_"))} onTaskDelete={handleTaskDelete} onEditTask={handleEditTask} onTaskUpdate={handleTaskUpdate} /></div>
+      <div className='tasklist'><TaskList tasks={tasks} onTaskDelete={handleTaskDelete} onEditTask={handleEditTask} onTaskUpdate={handleTaskUpdate} /></div>
       </div>
     </div>
   );
