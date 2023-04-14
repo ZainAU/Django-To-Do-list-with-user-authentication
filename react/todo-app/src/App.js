@@ -18,8 +18,9 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login onLogin={handleLogin} />} />
         <Route path="/dashboard" element={loggedIn ? <Dashboard /> : <Login onLogin={handleLogin} />} />
-        <Route path="/" element={<Register />} />
+        <Route path="/" element={<Login />} />
         <Route path='/taskform' element={<TaskForm/>}/>
+        <Route path='contactform' element={<Contact/>}/>
       </Routes>
     </Router>
   );
