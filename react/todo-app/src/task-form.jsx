@@ -32,8 +32,8 @@ function TaskForm(props) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log("bruh", title, event.category, description, deadline, completed, "bruh")
-    if (title.trim() === '' || category.trim() === '') {
+    // console.log("bruh", title, event.category, description, deadline, completed, "bruh")
+    if (title.trim() === '' || category.trim() === '' || !deadline) {
       alert('Please fill out all required fields');
       return;
     }
@@ -55,11 +55,6 @@ function TaskForm(props) {
 
   return (
     <div>
-      {/* <div className='header-bar'>
-      <h1>Create Task</h1>
-      <Link className='link' to='/dashboard'>Dashboard</Link>
-      <Link className='link' to='/login'>Logout</Link>
-      </div> */}
         <div>
           <h2>Create Task</h2>
         <form onSubmit={handleSubmit}>
@@ -83,7 +78,7 @@ function TaskForm(props) {
         </label>
         <br />
         <label>
-          Deadline:
+          Deadline (Required):
           <Datetime value={deadline} onChange={handleDeadlineChange} />
         </label>
         <br />

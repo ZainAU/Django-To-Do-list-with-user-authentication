@@ -10,6 +10,10 @@ import Task from './task';
 
 function TaskList(props) {
   const { tasks } = props;
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [showCompleted, setShowCompleted] = useState('');
+  const [sortByDeadline, setSortByDeadline] = useState(false);
 
   const handleTaskDone = (index) => {
     const updatedTasks = [...tasks];
@@ -17,18 +21,30 @@ function TaskList(props) {
     props.onTaskUpdate(updatedTasks);
   };
 
-  const [searchTerm, setSearchTerm] = useState('');
-
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
 
-  const filteredTasks = tasks.filter((task) => {
+  const handleCategoryChange = (event) => {
+    setSelectedCategory(event.target.value);
+  };
+
+  const handleSortByDeadlineChange = (event) => {
+    setSortByDeadline(event.target.checked);
+  };
+
+  const filteredTasks = props.tasks.filter((task) => {
     return (
-      task.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      task.description.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  });
+        task.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
+        (selectedCategory === "" || task.category === selectedCategory) &&
+        (showCompleted === "" || task.completed.toString() === showCompleted))
+    });
+
+  const sortedTasks = tasks.sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
+
+  const categories = [...new Set(tasks.map((task) => task.category))];
+
+  const completeness = [...new Set(tasks.map((task) => task.completed.toString()))];
 
   const taskItems = filteredTasks.map((task, index) => (
     // <Task index={index} taskDetails={task} handleTaskDone={handleTaskDone} onEditTask={props.onEditTask} onTaskDelete={props.onTaskDelete}/>
@@ -64,7 +80,29 @@ function TaskList(props) {
       <h2>Task List</h2>
       <p>You have {tasks.filter(task => !task.completed).length} incomplete tasks</p>
 
+      <div>
+        <label htmlFor="category">Filter by Category:</label>
+        <select id="category" value={selectedCategory} onChange={handleCategoryChange}>
+          <option value="">All</option>
+          {categories.map((category) => (
+            <option key={category} value={category}>
+              {category}
+            </option>
+          ))}
+        </select>
+        <label htmlFor="completeness">Filter by Completeness:</label>
+        <select id="completeness" value={showCompleted} onChange={(event) => setShowCompleted(event.target.value)}>
+          <option value="">All</option>
+          {completeness.map((completed) => (
+            <option key={completed} value={completed}>
+              {completed}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div className='search'>
       <input type='text' placeholder='Search tasks...' value={searchTerm} onChange={handleSearchChange} />
+      </div>
       <Card>
         <CardContent>
       {taskItems.length > 0 ? (
