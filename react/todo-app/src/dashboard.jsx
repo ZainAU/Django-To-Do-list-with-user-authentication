@@ -38,7 +38,11 @@ function Dashboard() {
 
   const [editingTask, setEditingTask] = useState(null);
 
-
+  // useEffect(() => {
+  //   localStorage.setItem("tasks", JSON.stringify(tasks))
+  //   console.log(localStorage)
+  // }, [tasks])
+  
   return (
     <div>
       <div  className="header-bar">
