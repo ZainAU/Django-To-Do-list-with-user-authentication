@@ -13,15 +13,19 @@ function Dashboard() {
 
   const handleTaskDelete = (taskIndex) => {
     const newTasks = [...tasks];
-    newTasks.splice(taskIndex, 1); // bruh this could be done more efficiently, why create newTasks
+    newTasks.splice(taskIndex, 1);
     setTasks(newTasks);
   };
 
   return (
     <div>
-      <h1  className="header-bar">Hello, {user}!</h1>
-      {/* <Link to='/taskform'>Create Task</Link> */}
-      <TaskForm onTaskCreate={handleTaskCreate} />
+      <div  className="header-bar">
+      <h1>Welcome, {user}!</h1>
+      <h2>You have {} incomplete tasks</h2>
+      </div>
+      <div className='card-body'>
+      <Link to='/taskform'>Create Task</Link>
+      {/* <TaskForm onTaskCreate={handleTaskCreate} /> */}
       <div>
         {tasks.map((task, index) => (
           <div key={index}>
@@ -39,6 +43,7 @@ function Dashboard() {
       </div>
       <div>
       <Link to='/login'>Logout</Link>
+      </div>
       </div>
     </div>
   );
