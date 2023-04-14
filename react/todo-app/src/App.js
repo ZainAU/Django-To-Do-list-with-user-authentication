@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Register from './register';
-import Login from './login';
-import Dashboard from './dashboard';
-import TaskForm from './task-form';
+import Register from './components/register';
+import Login from './components/login';
+import Dashboard from './components/dashboard';
+import TaskForm from './components/task-form';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
