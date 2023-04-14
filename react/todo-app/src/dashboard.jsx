@@ -20,10 +20,10 @@ function Dashboard() {
   return (
     <div>
       <div  className="header-bar">
-      <h1>Hello, {user}!</h1>
+      <h1>Welcome, {user}!</h1>
+      <h2>You have {} incomplete tasks</h2>
       </div>
       <div className='card-body'>
-      <h2>You have incomplete tasks</h2>
       <Link to='/taskform'>Create Task</Link>
       {/* <TaskForm onTaskCreate={handleTaskCreate} /> */}
       <div>

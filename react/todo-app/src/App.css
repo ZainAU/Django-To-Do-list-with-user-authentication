@@ -157,6 +157,7 @@ a {
 
 input[type=text],
 input[type=password],
+input[type=email],
 textarea {
   border: 1px solid #757575;
   border-radius: 5px;
