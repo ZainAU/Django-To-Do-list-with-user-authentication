@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Register from './components/register';
-import Login from './components/login';
-import Dashboard from './components/dashboard';
-import TaskForm from './components/task-form';
+import Register from './pages/Register';
+import Login from './pages/Login';
+import Dashboard from './pages/Dashboard';
+import TaskForm from './pages/TaskForm';
+import Contact from './pages/Contact';
+import './App.css'
+import TaskList from './components/TaskList';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -12,15 +15,18 @@ function App() {
     setLoggedIn(true);
   };
 
+  
+
   return (
     <Router>
       <Routes>
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login onLogin={handleLogin} />} />
-        <Route path="/dashboard" element={loggedIn ? <Dashboard /> : <Login onLogin={handleLogin} />} />
-        <Route path="/" element={<Login />} />
-        <Route path='/taskform' element={<TaskForm/>}/>
-        <Route path='contactform' element={<Contact/>}/>
+        <Route path="/Register" element={<Register />} />
+        <Route path="/Login" element={<Login onLogin={handleLogin} />} />
+        <Route path="/Dashboard" element={loggedIn ? <Dashboard /> : <Login onLogin={handleLogin} />} />
+        <Route path="/" element={<Login onLogin={handleLogin}/>} />
+        <Route path='/Taskform' element={<TaskForm/>}/>
+        <Route path='/TaskList' element={<TaskList/>}/>
+        <Route path='ContactForm' element={<Contact/>}/>
       </Routes>
     </Router>
   );

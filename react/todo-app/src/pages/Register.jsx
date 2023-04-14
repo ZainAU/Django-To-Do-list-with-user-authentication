@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import Dashboard from './dashboard';
+import Dashboard from './Dashboard';
 
 function Register() {
   const [username, setUsername] = useState('');
