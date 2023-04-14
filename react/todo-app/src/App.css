@@ -1,4 +1,4 @@
-/* .App {
+/* App {
   text-align: center;
 }
 
@@ -35,7 +35,7 @@
   to {
     transform: rotate(360deg);
   }
-} */
+}  */
 
 .header-bar {
   text-align: center;
@@ -49,7 +49,6 @@
 }
 
 body {
-  /* text-align: center; */
   background-color: #FAFAFA;
   font-family: 'Nunito', sans-serif;
   /* padding-top: 50px; */
@@ -75,8 +74,16 @@ a {
   font-weight: 600;
 }
 
+select{
+  border: 1px solid #757575;
+  border-radius: 5px;
+  padding: 10px;
+  width: 90%;
+}
+
 .link{
   color: #EEA390;
+  margin-left: 10px;
 }
 
 .container {
@@ -149,11 +156,11 @@ a {
   padding: 20px;
 }
 
-@media screen and (max-width:320px) {
+/* @media screen and (max-width:320px) {
   #search-add-wrapper {
       padding: 10px;
-  }
-}
+  } */
+
 
 input[type=text],
 input[type=password],
@@ -192,8 +199,8 @@ label {
 }
 
 .card-body {
-  padding-left: 30%;
-  padding-right: 30%;
+  padding-left: 20%;
+  padding-right: 20%;
 }
 
 .filter-category{
@@ -210,4 +217,23 @@ label {
 
 #sort_deadline{
   padding: 10px;
+}
+
+.taskform{
+  padding: 20px;
+  margin-right: 20px;
+  margin-left: 20px;
+}
+
+.tasklist{
+  margin-right: 20px;
+  margin-left: 20px;
+  padding: 20px;
+  float: right;
+}
+
+.flex-container{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 20px;
 }

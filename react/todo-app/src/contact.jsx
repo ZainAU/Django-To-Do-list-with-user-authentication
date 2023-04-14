@@ -39,6 +39,8 @@ export default function Contact(){
         <div>
         <div className="header-bar">
             <h1>Contact Us</h1>
+            <Link to='/dashboard' className='link'>Home</Link>
+            <Link to='/login' className='link'>Logout</Link>
             </div>
             <div className='card-body'>
             <form onSubmit={(event) => {event.preventDefault(); handleSubmit();}}>
@@ -55,7 +57,6 @@ export default function Contact(){
                 <textarea value={message} onChange={handleMessageChange}/>
                 </div>
                 <button className="button" type="submit" >Submit</button>
-                <Link to='/dashboard'>Back</Link>
             </form>
             </div>
         </div>
